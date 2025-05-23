@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AVS – Resume Timeline</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Timeline container with line */
+    .timeline-content {
+      position: relative;
+      padding-bottom: 2rem;
+    }
+    .timeline-content::before {
+      content: "";
+      position: absolute;
+      left: 50%; top: 0; bottom: 2rem;
+      width: 2px; background: #84cc16;
+      transform: translateX(-50%);
+    }
+    /* Hide items initially */
+    .timeline-item { opacity: 0; }
+    /* Letter animation base */
+    .letter {
+      display: inline-block;
+      opacity: 0;
+      transform: scale(0.5) translateY(20px) skewY(10deg);
+      white-space: pre;
+      transition: all 0.5s ease-out;
+    }
+    .letter.show {
+      opacity: 1;
+      transform: scale(1) translateY(0) skewY(0);
+    }
+  </style>
+</head>
+<body class="bg-black text-white font-sans">
+
+  <header class="text-center py-12">
+    <h1 class="text-4xl font-bold text-lime-400">My Resume Timeline</h1>
+    <p class="text-gray-400 mt-2">A visual journey of my experience, education & skills</p>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-8">
+    <div class="timeline-content">
+      <!-- Timeline Items -->
+      <div class="timeline-item mb-12 flex flex-col md:flex-row items-center md:justify-between" data-title="Delta Airlines – BPO Customer Service" data-desc="Helped customers with reservations, changes, and concerns with empathy and professionalism.">
+        <div class="md:w-5/12 text-right pr-6">
+          <h3 id="title-0" class="text-lime-400 font-semibold mb-2"></h3>
+          <p id="desc-0" class="text-gray-300"></p>
+        </div>
+        <div class="w-4 h-4 bg-lime-400 rounded-full border-4 border-black mx-auto md:mx-0"></div>
+        <div class="md:w-5/12"></div>
+      </div>
+
+      <div class="timeline-item mb-12 flex flex-col md:flex-row items-center md:justify-between" data-title="Animation Lab – Work Immersion" data-desc="Assisted students, maintained lab equipment, and supported smooth class transitions.">
+        <div class="md:w-5/12"></div>
+        <div class="w-4 h-4 bg-lime-400 rounded-full border-4 border-black mx-auto md:mx-0"></div>
+        <div class="md:w-5/12 text-left pl-6">
+          <h3 id="title-1" class="text-lime-400 font-semibold mb-2"></h3>
+          <p id="desc-1" class="text-gray-300"></p>
+        </div>
+      </div>
+
+      <div class="timeline-item mb-12 flex flex-col md:flex-row items-center md:justify-between" data-title="Batasan Hills National High School" data-desc="Graduated with honors (ICT Programming Track, 2023–2024).">
+        <div class="md:w-5/12 text-right pr-6">
+          <h3 id="title-2" class="text-lime-400 font-semibold mb-2"></h3>
+          <p id="desc-2" class="text-gray-300"></p>
+        </div>
+        <div class="w-4 h-4 bg-lime-400 rounded-full border-4 border-black mx-auto md:mx-0"></div>
+        <div class="md:w-5/12"></div>
+      </div>
+
+      <div class="timeline-item mb-12 flex flex-col md:flex-row items-center md:justify-between" data-title="NCII Certified – Computer System Servicing" data-desc="National Certificate II passer in ICT Systems — hands-on hardware & software proficiency.">
+        <div class="md:w-5/12"></div>
+        <div class="w-4 h-4 bg-lime-400 rounded-full border-4 border-black mx-auto md:mx-0"></div>
+        <div class="md:w-5/12 text-left pl-6">
+          <h3 id="title-3" class="text-lime-400 font-semibold mb-2"></h3>
+          <p id="desc-3" class="text-gray-300"></p>
+        </div>
+      </div>
+
+      <div class="timeline-item mb-12 flex flex-col md:flex-row items-center md:justify-between" data-title="Skills & Tools" data-desc="Customer service, project management, problem solving, Canva, Excel, Word, and PowerPoint.">
+        <div class="md:w-5/12 text-right pr-6">
+          <h3 id="title-4" class="text-lime-400 font-semibold mb-2"></h3>
+          <p id="desc-4" class="text-gray-300"></p>
+        </div>
+        <div class="w-4 h-4 bg-lime-400 rounded-full border-4 border-black mx-auto md:mx-0"></div>
+        <div class="md:w-5/12"></div>
+      </div>
+    </div>
+    <!-- Back Link -->
+    <div class="text-center mt-8">
+      <a href="https://code00213.github.io/AVS-BETA/" class="inline-block px-6 py-2 bg-lime-400 text-black font-semibold rounded-full hover:bg-lime-300 transition">
+        ← Back  toHome
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // Helper: wrap text into span letters
+    function wrapLetters(text) {
+      return text.split('').map(ch => {
+        const c = ch === ' ' ? '&nbsp;' : ch;
+        return `<span class="letter">${c}</span>`;
+      }).join('');
+    }
+
+    // Animate on scroll
+    const items = document.querySelectorAll('.timeline-item');
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const idx = [...items].indexOf(entry.target);
+          // 타이틀 and description
+          const titleEl = document.getElementById(`title-${idx}`);
+          const descEl = document.getElementById(`desc-${idx}`);
+          const titleText = entry.target.getAttribute('data-title');
+          const descText = entry.target.getAttribute('data-desc');
+          titleEl.innerHTML = wrapLetters(titleText);
+          descEl.innerHTML = wrapLetters(descText);
+          // stagger animation
+          const letters = entry.target.querySelectorAll('.letter');
+          letters.forEach((el, i) => {
+            setTimeout(() => el.classList.add('show'), i * 30);
+          });
+          entry.target.style.opacity = 1;
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    items.forEach(item => observer.observe(item));
+  </script>
+
+</body>
+</html>
